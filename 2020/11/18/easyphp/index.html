@@ -47,7 +47,7 @@
 
     <!-- Title -->
     
-    <title>Archives: 2020 - Rejeta&#39;s Blog</title>
+    <title>Rejeta&#39;s Blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -136,9 +136,7 @@
 <div class="container">
 
     <!-- Main Content -->
-    
-
-<div class="row">
+    <div class="row">
     <div class="col-sm-12">
 
         <!--Title and Logo-->
@@ -146,223 +144,69 @@
     <div class="logo">
         <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
         
-            <h1 id="main-title" class="title">2020</h1>
-        
     </div>
 </header>
 
-        <section class="main archive-container">
+        <section class="main">
             
-                <div class="archive-post">
-    <a href="/2020/11/16/hello-world/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Hello World
-    </a>
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2020/11/18/easyphp/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h1 id="我fork出来进程怎么可能会异常退出。"><a href="#我fork出来进程怎么可能会异常退出。" class="headerlink" title="我fork出来进程怎么可能会异常退出。"></a>我fork出来进程怎么可能会异常退出。</h1><?php
+    //题目环境：php:7.4.8-apache
+    $pid = pcntl_fork();        //建立子进程
+    if ($pid == -1) {           //进程建立失败，杀死进程，返回
+        die('could not fork');
+    }else if ($pid){            //进程建立成功
+        $r=pcntl_wait($status);     //返回进程的状态代码
+        if(!pcntl_wifexited($status)){      //检查进程代码是否属于正常退出
+            phpinfo();                      //输出phpinfo();
+        }
+    }else{
+        highlight_file(__FILE__);           //高亮显示
+        if(isset($_GET['a']) //是否存在变量
+           &&is_string($_GET['a']) //变量是否是字符串
+           &&!preg_match("/[:\\\\]|exec|pcntl/i",$_GET['a']))  //正则匹配，匹配变量中是否存在以上字符
+        {
+            call_user_func_array($_GET['a'],[$_GET['b'],false,true]); //回调函数，后回调给前
+        }
+        posix_kill(posix_getpid(), SIGUSR1); //结束进程
+    } 
+    </div>
+
+    
+
+    
+
+    <!-- Comments -->
+    
+
 </div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/easyphp/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%20%E9%80%9A%E5%85%B3%EF%BC%88sql-5%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3(sql-1)/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5%EF%BC%88sql-11%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5%EF%BC%88sql-12%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-2%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-3%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-7%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-4%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-6%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-8~10%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20Buyflag/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-lab%E9%80%9A%E5%85%B3%EF%BC%88sql-13%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20Knife1/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E5%BC%BA%E7%BD%91%E6%9D%AF%20%E9%9A%8F%E4%BE%BF%E6%B3%A8/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20babysql/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20easysql/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20havefun/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20https/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20lovesql/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20secret%20file/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20upload/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
         </section>
+
     </div>
 </div>
+
 
 </div>
 

