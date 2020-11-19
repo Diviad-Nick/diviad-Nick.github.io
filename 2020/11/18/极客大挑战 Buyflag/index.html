@@ -16,7 +16,7 @@
     <meta name="description" content="Life isn&#39;t about waiting for the storm to pass. It&#39;s about learning to dance in the rain" />
     
     <title>
-          Rejeta&#39;s Blog
+      极客大挑战 Buyflag - Rejeta&#39;s Blog
     </title>
     <link rel="manifest" href="/manifest.json" />
     <link rel="shortcut icon" href="/images/logo.jpeg" type="image/x-icon" />
@@ -26,6 +26,11 @@
   <meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <canvas id='pagemap'></canvas>
+    
+    <div id="post-toc" class="animated hiddenToc hide">
+      <span class="title">Toc</span>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98-Buyflag"><span class="toc-text">极客大挑战 Buyflag</span></a></li></ol>
+    </div>
     
     <div id="fixed-menu-wrap">
       <span class="iconfont icon-sousuo search-box menu-reset"></span>
@@ -162,7 +167,7 @@
         <article class="post-entry">
     <div class="header">
       
-      <div class="title"></div>
+      <div class="title">极客大挑战 Buyflag</div>
       <div class="meta">
         <span class="item">
           <span class="iconfont icon-time-circle"></span>
@@ -178,19 +183,19 @@
       <div>
       </div>
     </div>
-    <html><head></head><body><p>##极客大挑战 Buyflag<br>打开题目进入界面，没发现有用的信息，查看源代码发现pay.php<br>进入界面，查看源代码看到提示：<br>1.必须是学生<br>2.要有密码，密码是404，但是不能是纯数字<br>3.要有足够的钱<br>burpsuit抓包，发现cookie一栏中有有个user=0，果断改成1，第一层通过<br>密码和金钱都是post传参，用hackbar来完成，密码后面加上一个符号就能绕过 password=404[<br>金钱提示超过长度，用金钱数组来保存数字即可 money[]=1000000000(大概是这么多，忘了)<br>最后，payload如下<br>payload:<br><a href="https://diviad-nick.github.io/image/jkdtz_buyflag.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/jkdtz_buyflag.png" alt></a><br>最后拿到flag<br><a href="https://diviad-nick.github.io/image/jkdtz_buyflag_2.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/jkdtz_buyflag_2.png" alt></a></p>
+    <html><head></head><body><h1 id="极客大挑战-Buyflag">极客大挑战 Buyflag<a class="post-anchor" href="#极客大挑战-Buyflag"></a></h1><p>打开题目进入界面，没发现有用的信息，查看源代码发现pay.php<br>进入界面，查看源代码看到提示：<br>1.必须是学生<br>2.要有密码，密码是404，但是不能是纯数字<br>3.要有足够的钱<br>burpsuit抓包，发现cookie一栏中有有个user=0，果断改成1，第一层通过<br>密码和金钱都是post传参，用hackbar来完成，密码后面加上一个符号就能绕过 password=404[<br>金钱提示超过长度，用金钱数组来保存数字即可 money[]=1000000000(大概是这么多，忘了)<br>最后，payload如下<br>payload:<br><a href="https://diviad-nick.github.io/image/jkdtz_buyflag.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/jkdtz_buyflag.png" alt></a><br>最后拿到flag<br><a href="https://diviad-nick.github.io/image/jkdtz_buyflag_2.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/jkdtz_buyflag_2.png" alt></a></p>
 </body></html>
 
   
   <div class="post-guide">
     <div class="item left">
         
-          <a href="/2020/11/18/%E5%BC%BA%E7%BD%91%E6%9D%AF%20%E9%9A%8F%E4%BE%BF%E6%B3%A8/"></a>
+          <a href="/2020/11/18/%E5%BC%BA%E7%BD%91%E6%9D%AF%20%E9%9A%8F%E4%BE%BF%E6%B3%A8/">强网杯 随便注</a>
         
     </div>
     <div class="item right">
         
-          <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20babysql/"></a>
+          <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20babysql/">极客大挑战 babysql</a>
         
     </div>
   </div>
